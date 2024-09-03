@@ -18,13 +18,14 @@ void action(int sig)
     }
 }
 
-int main()
+int	main(void)
 {
-    ft_printf("PID: %d\n", getpid());
-    while(1)
-    {
-        signal(SIGUSR1, action);
-        signal(SIGUSR2, action);
-    }
-    return 0;
+	ft_printf("PID: %d\n", getpid());
+	while (1)
+	{
+		signal(SIGUSR1, action);
+		signal(SIGUSR2, action);
+        pause();
+	}
+	return (0);
 }
