@@ -54,6 +54,7 @@ int	ft_putnbr(int n);
 
 //minitalk
 void signal_action(int pid, char *str);
+void ft_acknowledge_handler(int sig);
 void action(int sig);
 
 #endif

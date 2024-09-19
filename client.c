@@ -1,37 +1,67 @@
 #include "minitalk.h"
 
-void	signal_action(int pid, char *str)
-{
-	int	i;
-	int	c;
+int g_confirm_flag = 0;
 
-	i = 0;
-	while (*str)
+void ft_resp_handler(int signum)
+{
+	g_confirm_flag = 1;
+	(void)signum;
+}
+
+void ft_send_bit(int pid, int bit)
+{
+	int signal;
+
+	if (bit == 1)
+		signal = SIGUSR1;
+	else
+		signal = SIGUSR2;
+	if (kill(pid, signal) == -1)
 	{
-		c = *(str);
-		while (i < 8)
-		{
-			if (c << i & 0b10000000)
-				kill(pid, SIGUSR1);
-			else
-				kill(pid, SIGUSR2);
-			i++;
-			usleep(500);
-		}
-		str++;
-		i = 0;
+		ft_putstr_fd("Error", 2);
+		exit(EXIT_FAILURE);
+	}
+	while (!g_confirm_flag)
+		;
+	g_confirm_flag = 0;
+}
+
+void ft_send_char(int pid, unsigned char c)
+{
+	int i;
+
+	i = 7;
+	while (i >= 0)
+	{
+		ft_send_bit(pid, (c >> i) & 1);
+		// usleep(5);
+		i--;
 	}
 }
 
-int main(int ac, char **av)
+void ft_send_string(int pid, const char *str)
 {
-    if(ac != 3)
-    {
-        exit(EXIT_FAILURE);
-    }
-    else
-    {
-        signal_action(ft_atoi(av[1]), av[2]);
-    }
-    return 0;
+	while (*str)
+		ft_send_char(pid, *str++);
+	ft_send_char(pid, '\0');
+}
+
+int main(int argc, char **argv)
+{
+	pid_t pid;
+
+	if (argc != 3)
+	{
+		ft_putstr_fd("Usage: ./client [PID] [string]\n", 2);
+		exit(EXIT_FAILURE);
+	}
+	pid = ft_atoi(argv[1]);
+	if (pid <= 0)
+	{
+		ft_putstr_fd("Invalid PID\n", 2);
+		exit(EXIT_FAILURE);
+	}
+	signal(SIGUSR2, ft_resp_handler);
+	ft_send_string(pid, argv[2]);
+	return (0);
 }
