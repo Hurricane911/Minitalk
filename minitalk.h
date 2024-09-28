@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minitalk.h                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: joyim <joyim@student.42kl.edu.my>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/27 10:59:37 by joyim             #+#    #+#             */
+/*   Updated: 2024/09/27 10:59:39 by joyim            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINITALK_H
 # define MINITALK_H
 
@@ -43,18 +55,13 @@ void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
 
 //printf
-int	ft_printf(const char *str, ...);
-int	ft_putchar(char c);
-int	ft_puthexlow(unsigned int n);
-int	ft_puthexcap(unsigned int n);
-int	ft_putptr(unsigned long nb);
-int	ft_putstr(char *s);
-int	ft_putunbr(unsigned int n);
-int	ft_putnbr(int n);
-
+int		ft_printf(const char *str, ...);
+int		ft_putchar(char c);
+int		ft_puthexlow(unsigned int n);
+int		ft_puthexcap(unsigned int n);
+int		ft_putptr(unsigned long nb);
+int		ft_putstr(char *s);
+int		ft_putunbr(unsigned int n);
+int		ft_putnbr(int n);
 //minitalk
-void signal_action(int pid, char *str);
-void ft_acknowledge_handler(int sig);
-void action(int sig);
-
 #endif

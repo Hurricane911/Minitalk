@@ -1,16 +1,28 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   client.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: joyim <joyim@student.42kl.edu.my>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/27 10:44:42 by joyim             #+#    #+#             */
+/*   Updated: 2024/09/27 10:51:49 by joyim            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minitalk.h"
 
-int g_confirm_flag = 0;
+int	g_confirm_flag = 0;
 
-void ft_resp_handler(int signum)
+void	ft_resp_handler(int signum)
 {
 	g_confirm_flag = 1;
 	(void)signum;
 }
 
-void ft_send_bit(int pid, int bit)
+void	ft_send_bit(int pid, int bit)
 {
-	int signal;
+	int		signal;
 
 	if (bit == 1)
 		signal = SIGUSR1;
@@ -26,29 +38,29 @@ void ft_send_bit(int pid, int bit)
 	g_confirm_flag = 0;
 }
 
-void ft_send_char(int pid, unsigned char c)
+void	ft_send_char(int pid, unsigned char c)
 {
-	int i;
+	int		i;
 
 	i = 7;
 	while (i >= 0)
 	{
 		ft_send_bit(pid, (c >> i) & 1);
-		// usleep(5);
+		usleep(50);
 		i--;
 	}
 }
 
-void ft_send_string(int pid, const char *str)
+void	ft_send_string(int pid, const char *str)
 {
 	while (*str)
 		ft_send_char(pid, *str++);
 	ft_send_char(pid, '\0');
 }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
-	pid_t pid;
+	pid_t	pid;
 
 	if (argc != 3)
 	{
